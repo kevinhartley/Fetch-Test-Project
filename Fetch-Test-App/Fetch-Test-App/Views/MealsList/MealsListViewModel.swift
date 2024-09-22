@@ -25,7 +25,7 @@ class MealsListViewModel: ObservableObject {
         Task {
             do {
                 let meals = try await mealDataProvider.searchMeals(with: query)
-                self.mealResults = meals
+                self.mealResults = meals.sorted{ $0.name < $1.name }
             } catch {
                 guard let mealsError = error as? MealsError else {
                     print("UnknownError: \(error)")
@@ -41,7 +41,7 @@ class MealsListViewModel: ObservableObject {
         Task {
             do {
                 let meals = try await mealDataProvider.fetchAllMeals()
-                self.mealResults = meals
+                self.mealResults = meals.sorted{ $0.name < $1.name }
             } catch {
                 guard let mealsError = error as? MealsError else {
                     print("UnknownError: \(error)")
