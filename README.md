@@ -13,7 +13,7 @@
 
 # Time Spent: Approximately how long did you spend working on this project? How did you allocate your time?
 
-- This took a weekend.
+- A couple hours a day over a weekend.
 
 # Trade-offs and Decisions: Did you make any significant trade-offs in your approach?
 
