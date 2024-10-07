@@ -67,16 +67,22 @@ struct MealsListView: View {
             .navigationTitle("Meals")
             .navigationBarTitleDisplayMode(.large)
             .refreshable(action: {
-                viewModel.fetchAllMeals()
+                Task {
+                    await viewModel.fetchAllMeals()
+                }
             })
             .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
             .onChange(of: viewModel.searchText, initial: true) { _, newText  in
                 if newText.isEmpty {
                     headerText = "All Results"
-                    viewModel.fetchAllMeals()
+                    Task {
+                        await viewModel.fetchAllMeals()
+                    }
                 } else {
                     headerText = "Search Results"
-                    viewModel.searchMeals(with: newText)
+                    Task {
+                        await viewModel.searchMeals(with: newText)
+                    }
                 }
             }
         }

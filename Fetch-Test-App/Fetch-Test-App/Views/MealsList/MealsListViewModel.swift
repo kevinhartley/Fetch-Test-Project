@@ -21,11 +21,13 @@ class MealsListViewModel: ObservableObject {
         self.mealDataProvider = mealDataProvider
     }
     
-    func searchMeals(with query: String) {
-        Task {
+    func searchMeals(with query: String) async {
+        Task.detached {
             do {
-                let meals = try await mealDataProvider.searchMeals(with: query)
-                self.mealResults = meals.sorted{ $0.name < $1.name }
+                let meals = try await self.mealDataProvider.searchMeals(with: query)
+                await MainActor.run {
+                    self.mealResults = meals.sorted{ $0.name < $1.name }
+                }
             } catch {
                 guard let mealsError = error as? MealsError else {
                     print("UnknownError: \(error)")
@@ -37,11 +39,13 @@ class MealsListViewModel: ObservableObject {
         }
     }
     
-    func fetchAllMeals() {
-        Task {
+    func fetchAllMeals() async {
+        Task.detached {
             do {
-                let meals = try await mealDataProvider.fetchAllMeals()
-                self.mealResults = meals.sorted{ $0.name < $1.name }
+                let meals = try await self.mealDataProvider.fetchAllMeals()
+                await MainActor.run {
+                    self.mealResults = meals.sorted{ $0.name < $1.name }
+                }
             } catch {
                 guard let mealsError = error as? MealsError else {
                     print("UnknownError: \(error)")
